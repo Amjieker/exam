@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <title></title>
+    <link rel="stylesheet" href="/static/admin/simpleui-x/elementui/theme-chalk/index.css">
+    {% block style %}
+        <style>
+
+        </style>
+    {% endblock style %}
+</head>
+<body>
+{% block div %}
+    <div id="app">
+        <el-button @click="visible = true">Button</el-button>
+{#        {% verbatim %}#}
+{#        {{ message }}#}
+{#        {% endverbatim %}#}
+        <el-dialog :visible.sync="visible" title="Hello world">
+            <p>Try Element</p>
+        </el-dialog>
+    </div>
+{% endblock div %}
+</body>
+<!-- import Vue before Element -->
+<script src="/static/admin/simpleui-x/js/vue.min.js"></script>
+<!-- import JavaScript -->
+<script src="/static/admin/simpleui-x/elementui/index.js"></script>
+<script src="/static/admin/simpleui-x/js/axios.min.js"></script>
+{% block script %}
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                visible: false,
+                message: '页面加载于 ' + new Date().toLocaleString()
+            }
+        })
+    </script>
+{% endblock script %}
+</html>

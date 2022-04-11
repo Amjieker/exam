@@ -1,0 +1,27 @@
+{% extends "include.html" %}
+{% block div %}
+    <div id="sipder">
+        <el-button @click="visible = true">Button</el-button>
+        <el-dialog :visible.sync="visible" title="Hello world">
+            <p>Try Element</p>
+        </el-dialog>
+    </div>
+{% endblock div %}
+{% block script %}
+    <script>
+        new Vue({
+            el: '#sipder',
+            data: {
+                visible: false,
+                message: '页面加载于 ' + new Date().toLocaleString()
+            }
+        })
+    </script>
+{% endblock script %}
+
+
+{% block style %}
+    <style>
+
+    </style>
+{% endblock style %}

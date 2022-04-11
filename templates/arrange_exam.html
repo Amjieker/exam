@@ -1,0 +1,370 @@
+{% extends "include.html" %}
+{% block div %}
+    <div id="arrange" v-loading.fullscreen.lock="load">
+        <el-card>
+            <el-steps :active="step" style="margin-top: 20px" simple>
+                <el-step title="基本信息" icon="el-icon-edit">
+
+                </el-step>
+                <el-step title="考试信息" icon="el-icon-c-scale-to-original">
+
+                </el-step>
+                <el-step title="监考信息" icon="el-icon-user-solid">
+
+                </el-step>
+            </el-steps>
+
+            <el-form label-width="120px" style="margin-top: 20px" :model="from_data" ref="from_data"
+                     label-position="left">
+                <el-form-item label="考试名称" v-if="step == 1" prop="course"
+                              :rules="[{ required: true, message: '考试名不能为空'}]">
+                    <el-input v-model="from_data.course" placeholder="名称" required>
+
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="考试地点" v-if="step == 1" prop="address"
+                              :rules="[{ required: true, message: '地点不能为空'}]">
+                    <el-select v-model="from_data.address" placeholder="地点" required>
+                        <el-option label="宜宾" value="1">
+
+                        </el-option>
+                        <el-option label="自贡" value="2">
+
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="开考学院" v-if="step == 1" prop="college"
+                              :rules="[{ required: true, message: '学院不能为空'}]">
+                    <el-select v-model="from_data.college" placeholder="学院" required>
+                        <el-option v-for="item in colleges" :label="item.name" :value="item.id">
+
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item
+                        label="考试描述"
+                        v-if="step == 1"
+                        prop="detail"
+                        :rules="[{ required: true, message: '描述不能为空'}]">
+                    <el-input type="textarea"
+                              autosize
+                              v-model="from_data.detail"
+                              placeholder=""
+                              required
+                    >
+
+                    </el-input>
+                </el-form-item>
+
+
+                <el-form-item
+                        label="考试时间"
+                        v-if="step == 2"
+                        prop="date"
+                        :rules="[{ required: true, message: '考试时间不能为空'}]">
+                    <el-date-picker
+                            v-model="from_data.date"
+                            type="datetime"
+                            placeholder="选择日期时间"
+                            required
+                    >
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item
+                        label="考试时长"
+                        v-if="step == 2"
+                        prop="time_length"
+                        :rules="[{ required: true, message: '时长不能为空'}]">
+                    <el-input-number v-model="from_data.time_length" :precision="2" :step="0.1"
+                                     :max="10"></el-input-number>
+                </el-form-item>
+
+                <el-form-item
+                        label="考试人数"
+                        v-if="step == 2"
+                        prop="person"
+                        :rules="[{ required: true, message: '人数不能为空'}]">
+                    <el-input-number v-model="from_data.person" placeholder="" required>
+
+                    </el-input-number>
+                </el-form-item>
+
+                <el-form-item
+                        label="当前学期"
+                        v-if="step == 3"
+                        prop="semesters"
+                        :rules="[{ required: true, message: '学期不能为空'}]">
+                    <el-input 
+
+			    v-model="from_data.semesters" placeholder="格式: 2021-1" required>
+
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item
+                        label="安排教师人数"
+                        v-if="step == 3"
+                        prop="teacher_count"
+                        :rules="[{ required: true, message: '不能为空'}]">
+                    <el-input-number
+                            v-model="from_data.teacher_count"
+                            placeholder="" required>
+
+                    </el-input-number>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button
+                            v-if="step != 1"
+                            style="margin-top: 12px;"
+                            @click="prv_step">
+			    <div v-html="pre"></div>
+                    </el-button>
+                    <el-button
+                            v-if="step != 3"
+                            style="margin-top: 12px;"
+                            @click="next_step('from_data')">
+			    <div v-html="nex"></div>
+                    </el-button>
+                    <el-button
+                            v-if="step == 3"
+                            style="margin-top: 12px;"
+                            @click="submit('from_data')">
+			    <div v-html="confirms"></div>
+                    </el-button>
+                </el-form-item>
+
+
+            </el-form>
+
+            <el-dialog
+                    title="确认"
+                    :visible.sync="dialogVisible"
+                    width="50%"
+                    :before-close="handleClose">
+                <el-card class="box-card">
+                    {% verbatim %}
+                    <el-descriptions
+                            title="监考信息"
+                            column="1">
+                        <el-descriptions-item
+                                label="考试">
+                          	<div v-html="from_data.course"></div>
+                        </el-descriptions-item>
+                        <el-descriptions-item
+                                label="地点">
+				<div v-html="from_data.address == '1' ? '宜宾' : '自贡'">
+				</div>
+                        </el-descriptions-item>
+                        <el-descriptions-item
+                                label="考试信息">
+                            <el-tag size="small">
+				    <div v-html="from_data.date"></div>
+			    </el-tag>
+                            <el-tag
+                                    size="small">
+				    <div v-html="from_data.time_length + 'h'"></div> 
+                            </el-tag>
+                            <el-tag
+                                    size="small">
+				    <div v-html="from_data.person + '人'"></div>
+                            </el-tag>
+                        </el-descriptions-item>
+                        <el-descriptions-item
+                                label="老师信息">
+                            <el-tag
+                                    size="small">
+				    <div v-html="'学期:' + from_data.semesters"></div>
+                            </el-tag>
+                            <br>
+                            <el-tag
+                                    size="small">
+				    <div v-html="'监考人数:' + from_data.teacher_count"> </div>
+                            </el-tag>
+                        </el-descriptions-item>
+                    </el-descriptions>
+                    {% endverbatim %}
+                </el-card>
+                <span
+                        slot="footer"
+                        class="dialog-footer">
+                <el-button
+                        @click="dialogVisible = false">
+			<span v-html="'取 消'"></span>
+                </el-button>
+                <el-button
+                        type="primary"
+                        @click="submit_exam">
+			<span v-html="'确 定'"> </span>
+                </el-button>
+            </span>
+            </el-dialog>
+        </el-card>
+
+
+    </div>
+
+{% endblock %}
+
+
+
+{% block script %}
+    <script>
+        const http = axios
+
+        new Vue({
+            el: '#arrange',
+
+            data: {
+                step: 1,
+		pre: "上一步",
+                nex: "下一步",
+		confirms: "确实",
+		refuse: "取消",
+		course_: "课程",
+		semesters_:"学期",
+		teacher_count_:"监考人数",
+		dialogVisible: false,
+                message: '页面加载于 ' + new Date().toLocaleString(),
+                from_data: {
+                    course: "",
+                    address: "",
+                    college: "",
+                    detail: "\n\n\n\n\n\n",
+                    date: new Date(),
+                    time_length: 0,
+                    person: 0,
+                    semesters: "2021-2",
+                    teacher_count: 0,
+                    datatime: 0
+                },
+                colleges: [],
+                load: false,
+            },
+            methods: {
+                next_step: function (num) {
+                    this.$refs[num].validate((valid) => {
+                        if (valid) {
+                            if (this.step < 3)
+                                this.step++
+                        } else {
+                            return false
+                        }
+                    });
+                },
+                prv_step: function () {
+                    if (this.step > 1)
+                        this.step--
+                },
+                submit: function (num) {
+                    this.$refs[num].validate((valid) => {
+                        if (valid) {
+                            {#alert('submit!')#}
+                            {#console.log(this.from_data)#}
+                            const rex = /\d\d\d\d-\d/;
+                            if (this.from_data.semesters.length == 6 && rex.test(this.from_data.semesters))
+                                if (this.from_data.time_length == 0)
+                                    this.$message({
+                                        type: 'info',
+                                        message: `考试时长为0`
+                                    });
+                                else if (this.from_data.person == 0)
+                                    this.$message({
+                                        type: 'info',
+                                        message: `考试人数为0`
+                                    });
+                                else if (this.from_data.teacher_count == 0)
+                                    this.$message({
+                                        type: 'info',
+                                        message: `监考老师为0`
+                                    });
+                                else
+                                    this.dialogVisible = true;
+                            else
+                                this.$message({
+                                    type: 'info',
+                                    message: `学期格式错误`
+                                });
+
+                        } else {
+                            console.log('error submit!!')
+
+                            return false
+                        }
+                    });
+                },
+                handleClose(done) {
+                    this.$confirm('确认关闭？')
+                        .then(_ => {
+                            done();
+                        })
+                        .catch(_ => {
+                        });
+                },
+                submit_exam() {
+                    this.load = true
+                    /*
+                    if (!isNaN(this.from_data.date)) {
+
+                        console.log("1")
+                        this.from_data.date = Date.parse(this.from_data.date)
+                    } else {
+
+                        console.log("2")
+                        this.from_data.date = Date.parse(new Date())
+                    }*/
+                    this.from_data.datatime = Date.parse(this.from_data.date)
+                    console.log(this.from_data.date)
+                    console.log(this.from_data)
+                    http.post('/arrange/arrangeExam', this.from_data).then(
+                        res => {
+                            this.load = false
+				console.log(res.data)
+				if (res.data.code != false) {
+				
+					this.$message({
+						  message: '添加考试成功',
+						  type: 'success'
+					});
+				} else {
+					this.$message({
+      					    message: '考试时间冲突或老师不够，请重新安排',
+      					    type: 'error'
+      					  });
+				}
+                        }
+                    )
+                    this.dialogVisible = false
+                }
+            },
+            created: function () {
+                console.log(this.message)
+                http.post('/teacher/college').then(
+                    res => this.colleges = res.data
+                )
+            }
+        })
+    </script>
+
+{% endblock %}
+
+
+{% block style %}
+    <style>
+        body {
+            background: rgb(241, 241, 241);
+        }
+
+        #arrange {
+            margin: auto 20%;
+        }
+
+        .text {
+            font-size: 14px;
+        }
+
+        .item {
+            margin-bottom: 18px;
+        }
+    </style>
+{% endblock %}

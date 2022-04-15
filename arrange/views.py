@@ -33,6 +33,10 @@ def getMessage(request):
         for loop in res:
             rang = loop.arrange_set.all()
             for i in rang:
+                # print(i.teacher_account_id)
+                # print(acc)
+                if i.teacher_account_id != acc: 
+                    continue
                 return_res.append(
                     {
                         "id": i.id,
@@ -46,6 +50,9 @@ def getMessage(request):
                         "showItem": False
                     }
                 )
+                # break
+                
+
 
         return_res.sort(key=lambda x: x['exam_date'], reverse=True)
         return_res.sort(key=lambda x: x['invigilate_state'])

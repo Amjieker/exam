@@ -4,39 +4,40 @@ from .models import *
 
 # Register your models here.
 class Teacher_list(admin.ModelAdmin):
-    list_display = ('id', 'name', 'sex', 'tell', 'address', 'college', 'department', 'profession')
+    list_display = ('name', 'sex', 'tell', 'address', 'college', 'profession')
     list_max_show_all = 5
     list_per_page = 5
-    search_fields = ['id', 'name']
-    ordering = ('id', 'name', 'sex', 'tell', 'address', 'college', 'department', 'profession')
-    list_display_links = ('id', 'name')
+    search_fields = ['name']
+    exclude = ['department', ]
+    ordering = ('name', 'sex', 'tell', 'address', 'college', 'profession')
+    list_display_links = ('name',)
 
 
 class College_list(admin.ModelAdmin):
-    list_display = ('id', 'name', 'detail')
+    list_display = ('name', 'detail')
     list_max_show_all = 5
     list_per_page = 5
-    search_fields = ['id', 'name']
-    ordering = ('id', 'name', 'detail')
-    list_display_links = ('id', 'name')
+    search_fields = ['name']
+    ordering = ('name', 'detail')
+    list_display_links = ('name', )
 
 
 class Department_list(admin.ModelAdmin):
-    list_display = ('id', 'name', 'detail')
+    list_display = ('name', 'detail')
     list_max_show_all = 5
     list_per_page = 5
-    search_fields = ['id', 'name']
-    ordering = ('id', 'name', 'detail')
-    list_display_links = ('id', 'name')
+    search_fields = ['name']
+    ordering = ('name', 'detail')
+    list_display_links = ('name', )
 
 
 class Profession_list(admin.ModelAdmin):
-    list_display = ('id', 'name', 'detail')
+    list_display = ('name', 'detail')
     list_max_show_all = 5
     list_per_page = 5
-    search_fields = ['id', 'name']
-    ordering = ('id', 'name', 'detail')
-    list_display_links = ('id', 'name')
+    search_fields = ['name']
+    ordering = ('name', 'detail')
+    list_display_links = ('name', )
 
 
 admin.site.register(Teacher, Teacher_list)

@@ -5,11 +5,11 @@ from .models import *
 # Register your models here.
 
 class Exam_list(admin.ModelAdmin):
-    list_display = ('id', 'course', 'detail', 'date', 'time_length', 'person', 'semesters')
+    list_display = ('course', 'detail', 'date', 'time_length', 'person', 'semesters')
     list_max_show_all = 5
     list_per_page = 5
     search_fields = ['course', 'detail']
-    ordering = ('id', 'course', 'detail', 'date', 'time_length', 'person', 'semesters')
+    ordering = ('course', 'detail', 'date', 'time_length', 'person', 'semesters')
     # form = Account_form
     exclude = ['address', ]
     # fields = ('nick', 'account', 'wx_uid')
@@ -33,11 +33,11 @@ class Exam_list(admin.ModelAdmin):
             return []
 
 class Arrange_list(admin.ModelAdmin):
-    list_display = ('teacher_account', 'exam_id', 'invigilate_state')
+    list_display = ('teacher_account', 'exam_id', 'invigilate')
     list_max_show_all = 5
     # search_fields = ['teacher_account']
     list_per_page = 5
-    ordering = ('teacher_account', 'exam_id', 'invigilate_state')
+    ordering = ('teacher_account', 'exam_id')
     # form = Account_form
     # exclude = ['id', ]
     # fields = ('nick', 'account', 'wx_uid')

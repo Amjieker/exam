@@ -25,10 +25,13 @@
                 <el-form-item label="考试地点" v-if="step == 1" prop="address"
                               :rules="[{ required: true, message: '地点不能为空'}]">
                     <el-select v-model="from_data.address" placeholder="地点" required>
-                        <el-option label="宜宾" value="1">
+                        <el-option label="A" value="1">
 
                         </el-option>
-                        <el-option label="自贡" value="2">
+                        <el-option label="B" value="2">
+
+                        </el-option>
+                        <el-option label="C" value="3">
 
                         </el-option>
                     </el-select>
@@ -153,7 +156,7 @@
                         </el-descriptions-item>
                         <el-descriptions-item
                                 label="地点">
-				<div v-html="from_data.address == '1' ? '宜宾' : '自贡'">
+				<div v-html="from_data.address == '1' ? 'A' : (from_data.address == '2' ? 'B' : 'C')">
 				</div>
                         </el-descriptions-item>
                         <el-descriptions-item

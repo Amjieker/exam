@@ -25,7 +25,7 @@ class Department(models.Model):
 
 # 专业
 class Profession(models.Model):
-    name = models.CharField(default="", max_length=50, verbose_name="专业简介")
+    name = models.CharField(default="", max_length=50, verbose_name="专业名称")
     detail = models.TextField(default="", verbose_name="专业简介")
 
     def __str__(self):

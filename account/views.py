@@ -51,7 +51,8 @@ def save_account(request):
     if request.method == 'POST':
         resp = json.loads(request.body.decode())
         res = models.Account.objects.all().filter(wx_uid=resp['wx_uid'])
-        t = check_account(resp)
+        # t = check_account(resp)
+        t = True
         if t is False:
             return to_json({"code": False})
         if len(res) is 0:

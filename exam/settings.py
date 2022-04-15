@@ -163,7 +163,7 @@ SIMPLEUI_CONFIG = {
         {
             'name': '可视化',
             'icon': 'fa fa-adjust',
-            'url': 'http://101.43.66.34:8083/index'
+            'url': 'http://101.43.66.34:8083/index.html'
         }, 
     ]
 }

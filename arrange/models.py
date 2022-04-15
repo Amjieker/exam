@@ -1,7 +1,7 @@
 import datetime
 
 from django.db import models
-
+from django.utils.html import format_html
 
 # Create your models here.
 
@@ -25,6 +25,18 @@ class Arrange(models.Model):
     exam_id = models.ForeignKey(Exam, verbose_name="考试名称", on_delete=models.NOT_PROVIDED)
     invigilate_state = models.IntegerField(default=0, verbose_name="教师确认状态", choices=STATE)
     add_date = models.DateTimeField()
+    def invigilate(self):
+        code = "black"
+        if self.invigilate_state == 1:
+            code = "green"
+        elif self.invigilate_state == 2:
+            code = "red"
+        return format_html(
+            '<span style="color: {}">{}</span>',
+            code,
+            self.STATE[self.invigilate_state][-1]
+        )
+    invigilate.short_description = u"状态" 
 
 
 class Message(models.Model):
